@@ -11,8 +11,10 @@ const Stack = createStackNavigator();
 const App = () => {
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: 'YOUR_WEB_CLIENT_ID.googleusercontent.com',
-      iosClientId: 'YOUR_IOS_CLIENT_ID.googleusercontent.com',
+      webClientId:
+        '827378856723-6ai5bg5mer1lisc63r91p4ggudiacdg4.apps.googleusercontent.com',
+      iosClientId:
+        '827378856723-couvoru5ug7outfb07kp5c9j633q7nbf.apps.googleusercontent.com',
     });
   }, []);
 
