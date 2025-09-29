@@ -137,12 +137,15 @@ const GalleryScreen = () => {
 
   return (
     <View style={[styles.flexContainer]}>
-      <View style={[styles.header]}>
-        <Image
-          source={{ uri: params?.user?.data?.user?.photo || '' }}
-          style={styles.avatar}
-        />
-        <Text style={styles.userName}>{params?.user?.data?.user?.name}</Text>
+      <View style={[styles.headerContainer]}>
+        <Text style={[styles.headerText]}>Gallery Screen</Text>
+        <View style={[styles.header]}>
+          <Image
+            source={{ uri: params?.user?.data?.user?.photo || '' }}
+            style={styles.avatar}
+          />
+          <Text style={styles.userName}>{params?.user?.data?.user?.name}</Text>
+        </View>
       </View>
 
       {/* Gallery */}
@@ -155,10 +158,9 @@ const GalleryScreen = () => {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            {/* <Icon name="photo-library" size={64} color="#ccc" /> */}
             <Text style={styles.emptyText}>No photos yet</Text>
             <Text style={styles.emptySubtext}>
-              Tap the + button to add your first photo
+              Tap the Add Image button to add your photo
             </Text>
           </View>
         }

@@ -1,4 +1,5 @@
 import { Platform, StyleSheet, Dimensions } from 'react-native';
+import { AppColors, FontSizes, hp, wp } from '../../utils';
 
 const { width } = Dimensions.get('window');
 const itemWidth = (width - 48) / 2;
@@ -7,25 +8,35 @@ export const styles = StyleSheet.create({
   flexContainer: {
     flex: 1,
   },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: Platform.OS === 'ios' ? hp(7) : hp(6),
+    paddingHorizontal: wp(3),
+    borderBottomWidth: wp(1),
+    borderBottomColor: '#e0e0e0',
+  },
+  headerText: {
+    color: AppColors.PRIMARY_TEXT,
+    fontSize: FontSizes.FONT_SIZE_25,
+    fontWeight: 'bold',
+    paddingTop: hp(2),
+  },
   header: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'ios' ? 70 : 40,
-    paddingBottom: 16,
-    borderBottomWidth: 5,
-    borderBottomColor: '#e0e0e0',
+    paddingBottom: hp(1),
   },
   avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 10,
-    marginBottom: 10,
+    width: wp(12),
+    height: wp(12),
+    borderRadius: wp(6),
+    marginBottom: hp(1),
   },
   userName: {
-    fontSize: 26,
+    fontSize: FontSizes.FONT_SIZE_12,
     fontWeight: 'bold',
-    color: '#1a1a1a',
+    color: AppColors.PRIMARY_TEXT,
   },
   gallery: {
     padding: 16,
@@ -65,7 +76,7 @@ export const styles = StyleSheet.create({
   },
   emptyState: {
     alignItems: 'center',
-    paddingVertical: 60,
+    paddingVertical: hp(30),
   },
   emptyText: {
     fontSize: 18,

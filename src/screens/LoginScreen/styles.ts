@@ -1,68 +1,48 @@
-import { StyleSheet, Platform, Dimensions } from 'react-native';
-
-const { width, height } = Dimensions.get('window');
+import { StyleSheet } from 'react-native';
+import { AppColors, FontSizes, hp, wp } from '../../utils';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
-  loadingContainer: {
-    flex: 1,
+  imageContainer: {
+    paddingTop: hp(25),
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f8f9fa',
+  },
+  logo: {
+    height: wp(50),
+    width: wp(75),
+    borderRadius: wp(2),
   },
   content: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 32,
+    paddingHorizontal: wp(8),
   },
   header: {
     alignItems: 'center',
-    marginBottom: 60,
+    marginBottom: hp(5),
   },
   title: {
-    fontSize: 32,
+    fontSize: FontSizes.FONT_SIZE_25,
     fontWeight: 'bold',
-    color: '#1a1a1a',
-    marginTop: 20,
-    marginBottom: 12,
+    color: AppColors.PRIMARY_TEXT,
+    marginTop: hp(2),
+    marginBottom: hp(1),
   },
   subtitle: {
-    fontSize: 16,
-    color: '#666',
+    fontSize: FontSizes.FONT_SIZE_14,
+    color: AppColors.SUBTITLE_TEXT,
     textAlign: 'center',
-    lineHeight: 24,
-    maxWidth: 280,
-  },
-  googleButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#4285F4',
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    borderRadius: 12,
-    elevation: Platform.OS === 'android' ? 4 : 0,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    marginBottom: 40,
-  },
-  googleIcon: {
-    marginRight: 12,
-  },
-  googleButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+    lineHeight: hp(2.6),
+    maxWidth: wp(70),
+    marginBottom: hp(6),
   },
   footerText: {
-    fontSize: 14,
-    color: '#999',
+    fontSize: FontSizes.FONT_SIZE_12,
+    color: AppColors.FOOTER_TEXT,
     textAlign: 'center',
-    lineHeight: 20,
+    lineHeight: hp(2),
   },
 });

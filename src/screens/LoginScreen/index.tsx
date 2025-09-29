@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
+import { View, Text, ActivityIndicator, Alert, Image } from 'react-native';
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+  GoogleSignin,
+  GoogleSigninButton,
+} from '@react-native-google-signin/google-signin';
 
+import { AppImages, AppColors, hp, wp } from '../../utils';
 import { useAppNavigation } from '../../hooks';
 import { styles } from './styles';
 
@@ -46,30 +44,29 @@ const LoginScreen = () => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.header}>
-          {/* <Icon name="photo-library" size={80} color="#4285F4" /> */}
-          <Text style={styles.title}>My Gallery</Text>
-          <Text style={styles.subtitle}>
-            Store and organize your memories with voice captions
+      <View style={[styles.imageContainer]}>
+        <Image source={AppImages.LOGO} style={[styles.logo]} />
+        <View style={styles.content}>
+          <View style={styles.header}>
+            <Text style={styles.title}>My Gallery</Text>
+            <Text style={styles.subtitle}>
+              Store and organize your memories with voice captions
+            </Text>
+          </View>
+          {loading ? (
+            <ActivityIndicator color={AppColors.PRIMARY_TEXT} size={'large'} />
+          ) : (
+            <GoogleSigninButton
+              style={{ width: wp(50), height: hp(7) }}
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Dark}
+              onPress={handleGoogleLogin}
+            />
+          )}
+          <Text style={styles.footerText}>
+            Secure authentication • Voice captions • Cross-platform sync
           </Text>
         </View>
-
-        <TouchableOpacity
-          style={styles.googleButton}
-          onPress={handleGoogleLogin}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color="#fff" size={'large'} />
-          ) : (
-            <Text style={styles.googleButtonText}>Sign in with Google</Text>
-          )}
-        </TouchableOpacity>
-
-        <Text style={styles.footerText}>
-          Secure authentication • Voice captions • Cross-platform sync
-        </Text>
       </View>
     </View>
   );
