@@ -12,6 +12,7 @@ import {
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { AppColors } from '../../utils';
 import { useAppNavigation } from '../../hooks';
 import { RootRouteProps } from '../../navigation/types/RootStackTypes';
 import { ImagePicker, ShareManager, VoiceInput } from '../../components';
@@ -122,13 +123,13 @@ const GalleryScreen = () => {
             style={styles.actionButton}
             onPress={() => handleShare(item)}
           >
-            <Text style={{ color: '#4285F4' }}>Share</Text>
+            <Text style={[styles.shareButton]}>Share</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => handleDeleteItem(item.id)}
             style={styles.actionButton}
           >
-            <Text style={{ color: '#f44336' }}>Delete</Text>
+            <Text style={[styles.deleteButton]}>Delete</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -160,7 +161,7 @@ const GalleryScreen = () => {
           <View style={styles.emptyState}>
             <Text style={styles.emptyText}>No photos yet</Text>
             <Text style={styles.emptySubtext}>
-              Tap the Add Image button to add your photo
+              Tap Add Image button to add your photo
             </Text>
           </View>
         }
@@ -168,7 +169,7 @@ const GalleryScreen = () => {
       {/* Add Button */}
       <ImagePicker onImageSelected={handleImageSelected}>
         <View style={styles.addButton}>
-          <Text style={{ color: '#fff' }}>Add Image</Text>
+          <Text style={[styles.addText]}>Add Image</Text>
         </View>
       </ImagePicker>
 
@@ -177,7 +178,6 @@ const GalleryScreen = () => {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Add Caption</Text>
-
             {selectedImage && (
               <Image
                 source={{ uri: selectedImage }}
@@ -189,6 +189,7 @@ const GalleryScreen = () => {
               <TextInput
                 style={styles.captionInput}
                 placeholder="Enter a caption..."
+                placeholderTextColor={AppColors.PRIMARY_TEXT}
                 value={caption}
                 onChangeText={setCaption}
                 multiline

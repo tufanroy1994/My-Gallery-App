@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, Alert, Platform, Text } from 'react-native';
 import Voice from '@react-native-voice/voice';
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+import { FontSizes } from '../utils';
 
 interface VoiceInputProps {
   onResult: (transcript: string) => void;
@@ -104,7 +105,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
       await Voice.stop();
       onListeningChange(false);
     } catch (error) {
-      console.error('Stop listening error:', error);
+      console.log('Stop listening error:', error);
     }
   };
 
@@ -130,7 +131,15 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
         alignItems: 'center',
       }}
     >
-      {isListening ? <Text>Mic-off</Text> : <Text>Mic</Text>}
+      {isListening ? (
+        <Text style={{ fontSize: FontSizes.FONT_SIZE_14, fontWeight: 'bold' }}>
+          Mic-off
+        </Text>
+      ) : (
+        <Text style={{ fontSize: FontSizes.FONT_SIZE_14, fontWeight: 'bold' }}>
+          Mic
+        </Text>
+      )}
     </TouchableOpacity>
   );
 };
