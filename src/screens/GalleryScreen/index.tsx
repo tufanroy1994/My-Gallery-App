@@ -14,7 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useAppNavigation } from '../../hooks';
 import { RootRouteProps } from '../../navigation/types/RootStackTypes';
-import { ImagePicker, ShareManager } from '../../components';
+import { ImagePicker, ShareManager, VoiceInput } from '../../components';
 import { styles } from './styles';
 
 export interface GalleryItem {
@@ -32,6 +32,7 @@ const GalleryScreen = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [caption, setCaption] = useState('');
+  const [isListening, setIsListening] = useState(false);
 
   useEffect(() => {
     loadGalleryItems();
@@ -79,6 +80,11 @@ const GalleryScreen = () => {
     setSelectedImage(null);
     setCaption('');
     setShowAddModal(false);
+  };
+
+  const handleVoiceResult = (transcript: string) => {
+    setCaption(transcript);
+    setIsListening(false);
   };
 
   const handleShare = async (item: GalleryItem) => {
@@ -185,11 +191,11 @@ const GalleryScreen = () => {
                 onChangeText={setCaption}
                 multiline
               />
-              {/* <VoiceInput
+              <VoiceInput
                 onResult={handleVoiceResult}
                 isListening={isListening}
                 onListeningChange={setIsListening}
-              /> */}
+              />
             </View>
 
             <View style={styles.modalButtons}>

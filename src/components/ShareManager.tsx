@@ -38,35 +38,38 @@ export class ShareManager {
     title?: string,
   ): Promise<void> {
     try {
-      let shareUrl = imageUri;
-
-      // Handle different platforms
-      if (Platform.OS === 'android') {
-        shareUrl = imageUri.startsWith('file://')
-          ? imageUri
-          : `file://${imageUri}`;
-      } else if (Platform.OS === 'ios') {
-        shareUrl = imageUri.startsWith('file://')
-          ? imageUri
-          : `file://${imageUri}`;
-      }
+      const shareUrl =
+        Platform.OS === 'android'
+          ? imageUri.startsWith('file://')
+            ? imageUri
+            : `file://${imageUri}`
+          : imageUri;
 
       const shareOptions = {
         title: title || 'My Gallery Photo',
-        message: caption || 'Shared from My Gallery',
+        message: caption || '',
         url: shareUrl,
         type: 'image/jpeg',
-        subject: title || 'My Gallery Photo',
-        failOnCancel: false,
+        failOnCancel: false, // Prevent throwing error if user cancels
       };
 
       const result = await Share.open(shareOptions);
       console.log('Share result:', result);
-    } catch (error: any) {
-      console.error('Share image with text error:', error);
-      if (error.message !== 'User did not share') {
-        throw new Error('Failed to share image with text');
+
+      // Only show error if sharing actually failed
+      if (!result.success && !result.dismissedAction) {
+        console.warn('Share did not complete.');
       }
+    } catch (error: any) {
+      // Ignore user cancel error
+      if (
+        error?.message === 'User did not share' ||
+        error?.message === 'User cancelled action'
+      ) {
+        console.log('Share cancelled by user');
+        return;
+      }
+      console.log('Share image error:', error);
     }
   }
 
