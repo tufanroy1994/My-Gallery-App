@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,42 +6,44 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-// import Icon from 'react-native-vector-icons/MaterialIcons';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
-import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../../context/AuthContext';
+import { useAppNavigation } from '../../hooks';
 import { styles } from './styles';
 
+GoogleSignin.configure({
+  webClientId:
+    '827378856723-6ai5bg5mer1lisc63r91p4ggudiacdg4.apps.googleusercontent.com',
+  iosClientId:
+    '827378856723-couvoru5ug7outfb07kp5c9j633q7nbf.apps.googleusercontent.com',
+  scopes: ['profile', 'email'],
+});
+
 const LoginScreen = () => {
-  const navigation = useNavigation();
-  const { user, isLoading, signIn } = useAuth();
+  const navigation = useAppNavigation('LoginScreen');
 
-  useEffect(() => {
-    if (user) {
-      navigation.navigate('GalleryScreen' as never);
-    }
-  }, [user, navigation]);
+  const [loading, setLoading] = useState(false);
 
-  const handleGoogleSignIn = async () => {
-    try {
-      await signIn();
-    } catch (error) {
-      Alert.alert(
-        'Sign In Error',
-        'Failed to sign in with Google. Please try again.',
-        [{ text: 'OK' }],
-      );
-    }
+  const GoogleLogin = async () => {
+    await GoogleSignin.hasPlayServices();
+    const userInfo = await GoogleSignin.signIn();
+    console.log('u', userInfo);
+    return userInfo;
   };
 
-  if (isLoading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4285F4" />
-      </View>
-    );
-  }
-
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    try {
+      const userInfo = await GoogleLogin(); // Google sign-in
+      console.log(userInfo);
+      navigation.navigate('GalleryScreen');
+    } catch (error: any) {
+      console.log('Login Error:', error);
+      Alert.alert('Login Failed', error?.message || 'Something went wrong');
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -55,10 +57,14 @@ const LoginScreen = () => {
 
         <TouchableOpacity
           style={styles.googleButton}
-          onPress={handleGoogleSignIn}
+          onPress={handleGoogleLogin}
+          disabled={loading}
         >
-          {/* <Icon name="login" size={24} color="#fff" style={styles.googleIcon} /> */}
-          <Text style={styles.googleButtonText}>Sign in with Google</Text>
+          {loading ? (
+            <ActivityIndicator color="#fff" size={'large'} />
+          ) : (
+            <Text style={styles.googleButtonText}>Sign in with Google</Text>
+          )}
         </TouchableOpacity>
 
         <Text style={styles.footerText}>
@@ -68,5 +74,4 @@ const LoginScreen = () => {
     </View>
   );
 };
-
 export default LoginScreen;

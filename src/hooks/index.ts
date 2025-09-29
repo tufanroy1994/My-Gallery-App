@@ -1,3 +1,4 @@
 import useAppNavigation from './navigationHook';
+import { useAuth } from './useAuth';
 
-export { useAppNavigation };
+export { useAppNavigation, useAuth };
