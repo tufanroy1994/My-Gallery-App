@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { AppColors, FontSizes, hp, wp } from '../../utils';
 
 export const styles = StyleSheet.create({
@@ -44,5 +44,6 @@ export const styles = StyleSheet.create({
     color: AppColors.FOOTER_TEXT,
     textAlign: 'center',
     lineHeight: hp(2),
+    paddingTop: Platform.OS === 'android' ? hp(1) : 0,
   },
 });

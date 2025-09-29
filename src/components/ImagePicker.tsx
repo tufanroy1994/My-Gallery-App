@@ -29,7 +29,7 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({
       const result = await request(permission);
       return result === RESULTS.GRANTED;
     } catch (error) {
-      console.error('Permission request error:', error);
+      console.log('Permission request error:', error);
       return false;
     }
   };

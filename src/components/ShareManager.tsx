@@ -13,7 +13,7 @@ export class ShareManager {
 
       await Share.open(shareOptions);
     } catch (error) {
-      console.error('Share error:', error);
+      console.log('Share error:', error);
       throw new Error('Failed to share image');
     }
   }
@@ -27,7 +27,7 @@ export class ShareManager {
 
       await Share.open(shareOptions);
     } catch (error) {
-      console.error('Share text error:', error);
+      console.log('Share text error:', error);
       throw new Error('Failed to share text');
     }
   }
@@ -92,7 +92,7 @@ export class ShareManager {
 
       await Share.open(shareOptions);
     } catch (error: any) {
-      console.error('Share multiple images error:', error);
+      console.log('Share multiple images error:', error);
       if (error.message !== 'User did not share') {
         throw new Error('Failed to share multiple images');
       }
@@ -140,7 +140,7 @@ export class ShareManager {
 
       await Share.shareSingle(shareOptions);
     } catch (error: any) {
-      console.error(`Share to ${socialMedia} error:`, error);
+      console.log(`Share to ${socialMedia} error:`, error);
       if (
         error.message.includes('not installed') ||
         error.message.includes('not available')
@@ -179,7 +179,7 @@ export class ShareManager {
       }
       return false;
     } catch (error) {
-      console.error('App installation check error:', error);
+      console.log('App installation check error:', error);
       return false;
     }
   }
