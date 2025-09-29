@@ -35,22 +35,35 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({
   };
 
   const requestGalleryPermission = async (): Promise<boolean> => {
-    try {
-      if (Platform.OS === 'android') {
-        const permission =
-          Platform.Version >= 33
-            ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
-            : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
-
-        const result = await request(permission);
-        return result === RESULTS.GRANTED;
+    if (Platform.OS === 'android') {
+      let permission;
+      if (Platform.Version >= 33) {
+        permission = PERMISSIONS.ANDROID.READ_MEDIA_IMAGES;
+      } else {
+        permission = PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
       }
-      // iOS doesn't need explicit permission for photo library in most cases
-      return true;
-    } catch (error) {
-      console.error('Gallery permission request error:', error);
+
+      const result = await request(permission);
+
+      if (result === RESULTS.GRANTED) return true;
+
+      if (result === RESULTS.DENIED) {
+        Alert.alert('Permission Denied', 'Gallery access denied by user');
+        return false;
+      }
+
+      if (result === RESULTS.BLOCKED) {
+        Alert.alert(
+          'Permission Blocked',
+          'Gallery permission is blocked. Please enable it in Settings',
+        );
+        return false;
+      }
       return false;
     }
+
+    // iOS photo library permission
+    return true;
   };
 
   const showImagePicker = () => {

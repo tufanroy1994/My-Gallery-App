@@ -14,7 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useAppNavigation } from '../../hooks';
 import { RootRouteProps } from '../../navigation/types/RootStackTypes';
-import { ImagePicker } from '../../components/ImagePicker';
+import { ImagePicker, ShareManager } from '../../components';
 import { styles } from './styles';
 
 export interface GalleryItem {
@@ -81,6 +81,14 @@ const GalleryScreen = () => {
     setShowAddModal(false);
   };
 
+  const handleShare = async (item: GalleryItem) => {
+    try {
+      await ShareManager.shareImage(item.uri, item.caption);
+    } catch (error) {
+      Alert.alert('Share Error', 'Failed to share image. Please try again.');
+    }
+  };
+
   const handleDeleteItem = (id: string) => {
     Alert.alert('Delete Image', 'Are you sure you want to delete this image?', [
       { text: 'Cancel', style: 'cancel' },
@@ -104,7 +112,10 @@ const GalleryScreen = () => {
           {item.caption}
         </Text>
         <View style={styles.actionButtons}>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => handleShare(item)}
+          >
             <Text style={{ color: '#4285F4' }}>Share</Text>
           </TouchableOpacity>
           <TouchableOpacity
