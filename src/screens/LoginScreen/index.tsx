@@ -36,7 +36,7 @@ const LoginScreen = () => {
     try {
       const userInfo = await GoogleLogin(); // Google sign-in
       console.log(userInfo);
-      navigation.navigate('GalleryScreen');
+      navigation.navigate('GalleryScreen', { user: userInfo });
     } catch (error: any) {
       console.log('Login Error:', error);
       Alert.alert('Login Failed', error?.message || 'Something went wrong');
