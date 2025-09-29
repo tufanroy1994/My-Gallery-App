@@ -1,4 +1,5 @@
 import { AppColors } from './colors';
-import { navigationRef } from './helperFunction';
+import { FontSizes } from './fontSizes';
+import { hp, navigationRef, wp } from './helperFunction';
 
-export { AppColors, navigationRef };
+export { AppColors, FontSizes, hp, navigationRef, wp };
