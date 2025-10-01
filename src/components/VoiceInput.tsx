@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, Alert, Platform, Text } from 'react-native';
-import Voice, {
-  SpeechResultsEvent,
-  SpeechErrorEvent,
-} from '@react-native-voice/voice';
+import React from 'react';
+import { TouchableOpacity, Alert, Text, Platform } from 'react-native';
+import { startSpeechToText } from 'react-native-voice-to-text';
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { FontSizes } from '../utils';
 
@@ -18,33 +15,6 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
   isListening,
   onListeningChange,
 }) => {
-  const [isAvailable, setIsAvailable] = useState(true);
-
-  useEffect(() => {
-    setupVoiceListeners();
-    return () => {
-      Voice.destroy().then(Voice.removeAllListeners);
-    };
-  }, []);
-
-  const setupVoiceListeners = () => {
-    Voice.onSpeechStart = () => onListeningChange(true);
-    Voice.onSpeechEnd = () => onListeningChange(false);
-    Voice.onSpeechError = (e: SpeechErrorEvent) => {
-      console.log('Speech error:', e);
-      onListeningChange(false);
-      Alert.alert(
-        'Voice Error',
-        'Failed to recognize speech. Please try again.',
-      );
-    };
-    Voice.onSpeechResults = (event: SpeechResultsEvent) => {
-      if (event.value && event.value.length > 0) {
-        onResult(event.value[0]);
-      }
-    };
-  };
-
   const requestMicrophonePermission = async (): Promise<boolean> => {
     try {
       const permission =
@@ -60,7 +30,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
     }
   };
 
-  const startListening = async () => {
+  const handlePress = async () => {
     try {
       const hasPermission = await requestMicrophonePermission();
       if (!hasPermission) {
@@ -71,35 +41,26 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
         return;
       }
 
-      await Voice.start('en-US'); // language code
       onListeningChange(true);
+
+      // Call library function
+      const result = await startSpeechToText();
+
+      if (typeof result === 'string' && result.trim().length > 0) {
+        onResult(result);
+      } else {
+        Alert.alert('No Speech Detected', 'Please try again.');
+      }
     } catch (error) {
-      console.log('Start listening error:', error);
+      console.log('Speech recognition error:', error);
       Alert.alert(
         'Voice Error',
-        'Failed to start voice input. Please try again.',
+        'Failed to recognize speech. Please try again.',
       );
-    }
-  };
-
-  const stopListening = async () => {
-    try {
-      await Voice.stop();
+    } finally {
       onListeningChange(false);
-    } catch (error) {
-      console.log('Stop listening error:', error);
     }
   };
-
-  const handlePress = () => {
-    if (isListening) {
-      stopListening();
-    } else {
-      startListening();
-    }
-  };
-
-  if (!isAvailable) return null;
 
   return (
     <TouchableOpacity
@@ -112,7 +73,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
       }}
     >
       <Text style={{ fontSize: FontSizes.FONT_SIZE_14, fontWeight: 'bold' }}>
-        {isListening ? 'Mic-off' : 'Mic'}
+        {isListening ? 'Listening...' : 'Mic'}
       </Text>
     </TouchableOpacity>
   );

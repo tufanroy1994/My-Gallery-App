@@ -12,11 +12,11 @@ const compileNodeModules = [
 ].map((moduleName) => path.resolve(appDirectory, `node_modules/${moduleName}`));
 
 const babelLoaderConfiguration = {
-  test: /\.js$|tsx?$/,
+  test: /\.[jt]sx?$/,
   // Add every directory that needs to be compiled by Babel during the build.
   include: [
     path.resolve(__dirname, 'index.web.js'), // Entry to your application
-    path.resolve(__dirname, 'App.web.tsx'), // Change this to your main App file
+    path.resolve(__dirname, 'App.tsx'), // Change this to your main App file
     path.resolve(__dirname, 'src'),
     ...compileNodeModules,
   ],
